@@ -2,44 +2,53 @@ package com.food4thought.food4thought.controller;
 
 import com.food4thought.food4thought.model.Order;
 import com.food4thought.food4thought.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/orders")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    @GetMapping("/orders")
+    @GetMapping()
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
-    @GetMapping("/orders/active")
+    @GetMapping("/active")
     public List<Order> getActiveOrders() {
         return orderService.getActiveOrders();
     }
 
-    @PostMapping("/orders")
-    public ResponseEntity<Order> postOrder(@RequestBody Order order) throws Exception {
+    @PostMapping()
+    public ResponseEntity<Order> postOrder(@RequestBody Order order) {
 
-        Order o = orderService.createOrder(order);
-        if (o == null) {
-            throw new Exception();
-        } else {
-            return new ResponseEntity<>(o, HttpStatus.CREATED);
+        Order o = new Order();
+
+        try {
+            o = orderService.createOrder(order);
+        } catch (Exception e) {
+            log.error("Error while saving order", e);
         }
+        return new ResponseEntity<>(o, HttpStatus.CREATED);
     }
 
-    //get /orders/{user}
 
-    @GetMapping("/orders/{userId}")
-    public List<Order> getOrdersFromACustomer(@PathVariable long userId) {
-        return orderService.getOrdersFromACustomer(userId);
+    @GetMapping("/{userId}")
+    public List<Order> getOrdersByACustomer(@PathVariable long userId) {
+        return orderService.getOrdersByACustomer(userId);
     }
 }

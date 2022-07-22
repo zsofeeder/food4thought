@@ -41,7 +41,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public List<Order> getOrdersFromACustomer(long customerId) {
+    public List<Order> getOrdersByACustomer(long customerId) {
         return orderRepository.findAllById(Collections.singleton(customerId));
     }
 }

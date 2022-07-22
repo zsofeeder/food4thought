@@ -13,13 +13,12 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    public List<Customer> getAllCustomers() {
+    public List<Customer> getCustomers() {
         return customerRepository.findAll();
     }
 
-    public Customer getSpecificCustomer(Long id) {
-        //todo: handle optional
-        return customerRepository.findById(id).get();
+    public Customer getCustomer(Long id) {
+        return customerRepository.findById(id).orElse(null);
     }
 
     public Customer addCustomer(Customer customer) {
