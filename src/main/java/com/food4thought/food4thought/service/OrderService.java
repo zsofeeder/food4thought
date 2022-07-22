@@ -1,24 +1,21 @@
 package com.food4thought.food4thought.service;
 
 import com.food4thought.food4thought.model.Order;
-import com.food4thought.food4thought.model.OrderState;
 import com.food4thought.food4thought.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.food4thought.food4thought.model.OrderState.AT_CUSTOMER;
-
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    public List<Order> getAllOrders() {
+    public List<Order> getOrders() {
         return orderRepository.findAll();
     }
 
@@ -38,5 +35,13 @@ public class OrderService {
             }
         }
         return activeOrders; */
+    }
+
+    public Order addOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
+    public List<Order> getOrdersByCustomer(long customerId) {
+        return orderRepository.findAllById(Collections.singleton(customerId));
     }
 }
