@@ -15,7 +15,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public List<Order> getAllOrders() {
+    public List<Order> getOrders() {
         return orderRepository.findAll();
     }
 
@@ -37,11 +37,11 @@ public class OrderService {
         return activeOrders; */
     }
 
-    public Order createOrder(Order order) {
+    public Order addOrder(Order order) {
         return orderRepository.save(order);
     }
 
-    public List<Order> getOrdersByACustomer(long customerId) {
+    public List<Order> getOrdersByCustomer(long customerId) {
         return orderRepository.findAllById(Collections.singleton(customerId));
     }
 }

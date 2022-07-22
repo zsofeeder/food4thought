@@ -24,8 +24,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping()
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public List<Order> getOrders() {
+        return orderService.getOrders();
     }
 
     @GetMapping("/active")
@@ -39,7 +39,7 @@ public class OrderController {
         Order o = new Order();
 
         try {
-            o = orderService.createOrder(order);
+            o = orderService.addOrder(order);
         } catch (Exception e) {
             log.error("Error while saving order", e);
         }
@@ -48,7 +48,7 @@ public class OrderController {
 
 
     @GetMapping("/{userId}")
-    public List<Order> getOrdersByACustomer(@PathVariable long userId) {
-        return orderService.getOrdersByACustomer(userId);
+    public List<Order> getOrdersByCustomer(@PathVariable long userId) {
+        return orderService.getOrdersByCustomer(userId);
     }
 }
